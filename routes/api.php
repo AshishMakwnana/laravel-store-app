@@ -10,3 +10,5 @@ Route::get('/user', function (Request $request) {
 
 
 Route::get('api-test',Controller::class.'@apiTest');
+
+Route::post('/register', [Controller::class, 'register']);
