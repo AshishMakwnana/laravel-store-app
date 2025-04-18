@@ -15,7 +15,8 @@ class LoginController extends Controller
     public function login(LoginRequest $request)
     {
         try {
-            $credentials = $request->only('email', 'password');
+            $credentials  = $request->validated();
+
             if (!Auth::attempt($credentials)) {
                 throw new ModelNotFoundException('invalid username and password');
             }
