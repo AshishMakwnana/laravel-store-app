@@ -1,14 +1,8 @@
 <?php
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\LoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
-
-
-Route::get('api-test',Controller::class.'@apiTest');
-
-Route::post('/register', [Controller::class, 'register']);
+Route::POST('/login',[LoginController::class,'login']);
