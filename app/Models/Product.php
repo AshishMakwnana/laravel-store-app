@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+
 class Product extends Model
 {
     use HasFactory;
@@ -22,7 +23,13 @@ class Product extends Model
         'updated_at'
     ];
 
-    public function setNameAttribute($value){
-        return Str::title($value);
+   protected  static function boot(){
+        parent::boot();
+        static::creating(function($model){
+            $model->name = Str::title($model->name);
+        });
+        static::updating(function($model){
+            $model->name = Str::title($model->name);
+        });
     }
 }
