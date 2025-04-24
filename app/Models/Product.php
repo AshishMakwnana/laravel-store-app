@@ -23,6 +23,10 @@ class Product extends Model
         'updated_at'
     ];
 
+    public function cartItems(){
+        return $this->hasMany(CartItem::class);
+    }
+
    protected  static function boot(){
         parent::boot();
         static::creating(function($model){
