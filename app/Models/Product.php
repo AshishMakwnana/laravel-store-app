@@ -27,6 +27,10 @@ class Product extends Model
         return $this->hasMany(CartItem::class);
     }
 
+    public function orderItem(){
+        return $this->hasMany(OrderItem::class);
+    }
+
    protected  static function boot(){
         parent::boot();
         static::creating(function($model){
@@ -36,4 +40,6 @@ class Product extends Model
             $model->name = Str::title($model->name);
         });
     }
+
+
 }

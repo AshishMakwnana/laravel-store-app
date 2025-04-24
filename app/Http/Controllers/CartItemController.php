@@ -74,10 +74,13 @@ class CartItemController extends Controller
     public function destroy(CartItem $cartItem)
     {
         try{
+            if(!$cartItem){
+                return $this->errorResponse('Item not found',404);
+            }
             $cartItem->delete();
-            return $this->successResponse('Item remove form the cart');
+            return $this->successResponse("Item remove form the cart $cartItem->id");
         }catch(Exception $e){
-            return $this->errorResponse();
+            return $this->errorResponse($e->getMessage());
         }
     }
 }
