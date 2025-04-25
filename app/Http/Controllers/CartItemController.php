@@ -34,10 +34,22 @@ class CartItemController extends Controller
     public function store(CartRequest $request)
     {
         try {
-            $cartItem = CartItem::updateOrCreate(
+
+            $cartItem = CartItem::where(
                 ['user_id' => auth()->id(), 'product_id' => $request->product_id],
-                ['quantity' => DB::raw("quantity + {$request->quantity}")]
-            );
+            )->first();
+
+            if($cartItem){
+                $cartItem->quantity += $request->quantity;
+                $cartItem->save();
+            }else{
+                CartItem::create([
+                    'user_id'=> auth()->id(),
+                    'product_id'=> $request->product_id,
+                    'quantity' => $request->quantity
+                ]);
+            }
+
             return $this->successResponse($cartItem, 'Item added to cart successfully');
         } catch (Exception $e) {
             $this->errorResponse('Failed to add item to cart', 500, $e->getMessage());
