@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\ApiResponseTrait;
+use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -76,6 +78,32 @@ class OrderController extends Controller
         } catch (Exception $e) {
             DB::rollBack();
             return $this->errorResponse('server error', 500, $e->getMessage());
+        }
+    }
+
+    /**
+     * update order status pending approved cancelled
+     */
+
+    public function update(UpdateOrderRequest $request, Order $order)
+    {
+        try {
+            $order->update([
+                'status' => $request->status,
+            ]);
+            return $this->successResponse($order,'order status updated successfully',200);
+        } catch (ModelNotFoundException $e) {
+            $this->errorResponse("Order Id $order->id Not Found", 404);
+        } catch (Exception $e) {
+            $this->errorResponse('Error: Somthing happend wronge to updat the status', 500, $e->getMessage());
+        }
+    }
+    public function allOrders(){
+        try{
+            $orders = Order::with('items.product')->get();
+            return $this->successResponse($orders,'All Orders List');
+        }catch(Exception $e){
+            return $this->errorResponse($e->getMessage());
         }
     }
 }

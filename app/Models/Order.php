@@ -11,7 +11,8 @@ class Order extends Model
     protected $table = "orders";
     protected $fillable = [
         'user_id',
-        'total_price'
+        'total_price',
+        'status'
     ];
 
     protected $casts = [
@@ -19,6 +20,6 @@ class Order extends Model
     ];
 
     public function items()  {
-        $this->hasMany(OrderItem::class);
+       return $this->hasMany(OrderItem::class);
     }
 }

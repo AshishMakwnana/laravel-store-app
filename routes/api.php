@@ -11,4 +11,5 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::apiResource('products',ProductController::class);
     Route::apiResource('cart',CartItemController::class);
     Route::apiResource('order',OrderController::class);
+    Route::get('/orders/all',[OrderController::class,'allOrders']);
 });
